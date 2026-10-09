@@ -131,11 +131,14 @@ END $$
 
 DELIMITER ;
 
--- Pruebas rápidas
+-- Prueba rápida (solo lectura)
 CALL sp_get_patient_visits(1);
-CALL sp_register_iop(14, 'OD', 15.5, 'GOLDMANN', NULL);
-CALL sp_generate_control_alerts(3);
-SELECT * FROM clinical_alerts WHERE alert_type = 'CONTROL_VENCIDO';
+
+-- Pruebas que modifican datos (comentadas para que cargar el script no
+-- altere el seed). Verificadas en MariaDB 10.4:
+-- CALL sp_register_iop(14, 'OD', 15.5, 'GOLDMANN', NULL);  -- devuelve el nuevo iop_id
+-- CALL sp_generate_control_alerts(3);                      -- crea 2 alertas (pacientes 3 y 6)
+-- SELECT * FROM clinical_alerts WHERE alert_type = 'CONTROL_VENCIDO';
 
 -- Pruebas de validación (comentadas porque detienen el script):
 -- CALL sp_get_patient_visits(999);                         -- Error: El paciente no existe
