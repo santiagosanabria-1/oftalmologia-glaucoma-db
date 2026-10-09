@@ -2,7 +2,7 @@
 
 Proyecto académico: base de datos relacional normalizada hasta 4FN para gestionar historias clínicas del área de oftalmología y glaucoma (pacientes, consultas, diagnósticos, antecedentes, exámenes, PIO, OCT, campos visuales, tratamientos, procedimientos, controles de glaucoma y auditoría). Incluye el banco de 250 ejercicios resueltos y verificados.
 
-- **Motor:** MariaDB 10.4+ (XAMPP). Todo el SQL evita sintaxis exclusiva de MySQL 8.
+- **Motor:** MySQL 8.4 en Docker (forma recomendada) o MariaDB 10.4+ con XAMPP. Todo el SQL se verificó en ambos motores.
 - **Base de datos:** `oftalmologia_glaucoma` (utf8mb4) — 30 tablas.
 
 ## Estructura del repositorio
@@ -31,8 +31,53 @@ ejercicios/
   parte4_triggers.sql        50 triggers (con pruebas comentadas)
   parte5_funciones.sql       50 funciones
 evidencias/                  Capturas de ejecución
+.devcontainer/               Workspace de VS Code (Dev Container)
+docker-compose.yml           MySQL 8.4 + phpMyAdmin + workspace
+.env.example                 Plantilla de variables (copiar como .env)
 TallerExamenBd_completo.md   Enunciado del taller con las 250 soluciones
 ```
+
+## Cómo ejecutarlo con Docker (recomendado)
+
+Requisito: Docker Desktop encendido.
+
+1. Crear el archivo de variables a partir de la plantilla y cambiar las contraseñas:
+
+```bash
+copy .env.example .env
+```
+
+2. Levantar los contenedores:
+
+```bash
+docker compose up -d
+```
+
+Al crearse el volumen por primera vez, MySQL ejecuta solo los scripts de `sql/` en orden (`01_schema` → `07_events`), así que la base `oftalmologia_glaucoma` queda lista con datos, vistas, funciones, procedimientos, triggers y el evento (en MySQL 8.4 el `event_scheduler` ya viene encendido).
+
+| Servicio | Contenedor | Acceso |
+|---|---|---|
+| MySQL 8.4 | `glaucoma_mysql_db` | `localhost:3307` (usuario `root` o el de `MYSQL_USER`) |
+| phpMyAdmin | `glaucoma_phpmyadmin` | http://localhost:8081 |
+| Workspace VS Code | `glaucoma-dev-workspace` | *Dev Containers: Reopen in Container* |
+
+3. Ejecutar los ejercicios (por ejemplo, la Parte I) desde la terminal:
+
+```bash
+docker exec glaucoma_mysql_db sh -c 'mysql -u root -p"$MYSQL_ROOT_PASSWORD" < /ejercicios/parte1_consultas.sql'
+```
+
+(La carpeta `ejercicios/` está montada en `/ejercicios` dentro del contenedor; el comando funciona igual en PowerShell y en bash.)
+
+o abrirlos en phpMyAdmin → pestaña **SQL** / **Importar**.
+
+Para volver a la base limpia (borra los datos del volumen y vuelve a correr `sql/`):
+
+```bash
+docker compose down -v
+```
+
+Los puertos 3307 y 8081 son los mismos del contenedor `C:\mysql\mysqlcontainer`; si ese stack está encendido, apagarlo antes o cambiar `MYSQL_PORT` y `PHPMYADMIN_PORT` en `.env`.
 
 ## Cómo ejecutarlo en XAMPP
 
@@ -50,7 +95,7 @@ C:\xampp\mysql\bin\mysql.exe -u root --default-character-set=utf8mb4 < sql\07_ev
 ```
 
 3. Luego los ejercicios, en orden (`parte1` … `parte5`). La Parte III inserta y modifica datos de prueba; para repetirla, volver a ejecutar `01_schema.sql` y `02_seed.sql`.
-4. El evento necesita el programador de eventos encendido: `SET GLOBAL event_scheduler = ON;` (ver comentario en `07_events.sql`).
+4. En XAMPP el evento necesita el programador de eventos encendido: `SET GLOBAL event_scheduler = ON;` (ver comentario en `07_events.sql`).
 
 También se puede usar phpMyAdmin → pestaña **Importar**, respetando el mismo orden.
 
@@ -77,4 +122,4 @@ Los exámenes, la PIO, los tratamientos y los procedimientos no tienen `patient_
 
 ## Verificación
 
-Todos los scripts se ejecutaron en orden desde una base vacía en MariaDB 10.4.34 sin errores: 250/250 ejercicios corren. Las validaciones de procedimientos y triggers se probaron con casos válidos e inválidos (los inválidos quedan comentados en los archivos con el error esperado).
+Todos los scripts se ejecutaron en orden desde una base vacía, sin errores, en **MySQL 8.4.11** (Docker) y en **MariaDB 10.4.34**: 250/250 ejercicios corren en ambos. Las validaciones de procedimientos y triggers se probaron con casos válidos e inválidos (los inválidos quedan comentados en los archivos con el error esperado).

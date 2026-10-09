@@ -4,7 +4,8 @@
 -- Compatible con MariaDB 10.4+.
 --
 -- IMPORTANTE: el evento solo se ejecuta si el programador de eventos
--- está encendido. En XAMPP viene apagado por defecto. Para activarlo
+-- está encendido. En MySQL 8.4 (docker-compose.yml) viene encendido por
+-- defecto. En XAMPP (MariaDB) viene apagado. Para activarlo
 -- (como root, se pierde al reiniciar MariaDB):
 --
 --     SET GLOBAL event_scheduler = ON;
