@@ -5612,7 +5612,7 @@ END $$
 DELIMITER ;
 
 -- PRUEBA: UPDATE patients SET address = 'Cra 30 # 50-10' WHERE id = 2;
--- PRUEBA: SELECT JSON_VALUE(old_values, '$.address') AS old_address, JSON_VALUE(new_values, '$.address') AS new_address FROM audit_logs WHERE table_name = 'patients' AND record_id = 2 AND JSON_EXISTS(old_values, '$.sex') AND NOT JSON_EXISTS(new_values, '$.audit');
+-- PRUEBA: SELECT JSON_VALUE(old_values, '$.address') AS old_address, JSON_VALUE(new_values, '$.address') AS new_address FROM audit_logs WHERE table_name = 'patients' AND record_id = 2 AND JSON_CONTAINS_PATH(old_values, 'one', '$.sex') AND NOT JSON_CONTAINS_PATH(new_values, 'one', '$.audit');
 -- ESPERADO: Calle 56 # 31-22 → Cra 30 # 50-10
 ```
 
@@ -5674,7 +5674,7 @@ END $$
 DELIMITER ;
 
 -- PRUEBA: UPDATE glaucoma_records SET target_pressure = 15 WHERE id = 2;
--- PRUEBA: SELECT old_values, new_values FROM audit_logs WHERE table_name = 'glaucoma_records' AND JSON_EXISTS(old_values, '$.target_pressure');
+-- PRUEBA: SELECT old_values, new_values FROM audit_logs WHERE table_name = 'glaucoma_records' AND JSON_CONTAINS_PATH(old_values, 'one', '$.target_pressure');
 -- ESPERADO: 18.0 → 15.0
 ```
 
@@ -5706,7 +5706,7 @@ END $$
 DELIMITER ;
 
 -- PRUEBA: UPDATE glaucoma_records SET clinical_status = 'EN_PROGRESION' WHERE id = 2;
--- PRUEBA: SELECT old_values, new_values FROM audit_logs WHERE table_name = 'glaucoma_records' AND JSON_EXISTS(old_values, '$.clinical_status');
+-- PRUEBA: SELECT old_values, new_values FROM audit_logs WHERE table_name = 'glaucoma_records' AND JSON_CONTAINS_PATH(old_values, 'one', '$.clinical_status');
 -- ESPERADO: NO_CONTROLADO → EN_PROGRESION
 ```
 
@@ -5933,7 +5933,7 @@ END $$
 DELIMITER ;
 
 -- PRUEBA: DELETE FROM patients WHERE first_name = 'Paolo';
--- PRUEBA: SELECT JSON_VALUE(old_values, '$.document_number') FROM audit_logs WHERE table_name = 'patients' AND action = 'DELETE' AND JSON_EXISTS(old_values, '$.created_at');
+-- PRUEBA: SELECT JSON_VALUE(old_values, '$.document_number') FROM audit_logs WHERE table_name = 'patients' AND action = 'DELETE' AND JSON_CONTAINS_PATH(old_values, 'one', '$.created_at');
 -- ESPERADO: E555ABC (copia completa del paciente borrado)
 ```
 
