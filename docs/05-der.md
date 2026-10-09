@@ -1,6 +1,10 @@
 # 5. Diagrama Entidad-Relación (DER)
 
-Diagrama generado a partir del esquema físico real (`sql/01_schema.sql`). Incluye las **30 tablas**, sus claves primarias (`PK`), foráneas (`FK`), columnas únicas (`UK`) y las 30 relaciones con su cardinalidad. GitHub lo renderiza automáticamente.
+Diagrama generado a partir del esquema físico real (`sql/01_schema.sql`). Incluye las **30 tablas**, sus claves primarias (`PK`), foráneas (`FK`), columnas únicas (`UK`) y las 30 relaciones con su cardinalidad.
+
+![Diagrama Entidad-Relación](img/der.png)
+
+<sub>Fuente editable: [`img/der.dot`](img/der.dot) (Graphviz). Más abajo está la misma información como diagrama Mermaid, que GitHub dibuja de forma interactiva.</sub>
 
 ## Cómo leer las cardinalidades (notación pata de gallo)
 
@@ -17,7 +21,7 @@ Las relaciones N:M se resuelven con **entidades asociativas**:
 
 La etiqueta de cada relación es la columna FK que la implementa. `audit_logs` no tiene relaciones físicas a propósito: guarda `table_name` + `record_id` para conservar el rastro aunque el registro original se elimine.
 
-## Diagrama
+## Diagrama Mermaid (interactivo)
 
 ```mermaid
 erDiagram

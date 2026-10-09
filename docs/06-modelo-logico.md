@@ -2,6 +2,10 @@
 
 El modelo lógico transforma las entidades del modelo conceptual en **relaciones** (tablas) con sus atributos, claves primarias y claves foráneas. Es independiente de detalles de almacenamiento, pero ya usa los nombres definitivos en inglés de `sql/01_schema.sql`.
 
+![Modelo lógico relacional](img/modelo-logico.png)
+
+<sub>Tablas agrupadas por dominio; cada flecha va de la FK a la PK que referencia. Fuente editable: [`img/modelo-logico.dot`](img/modelo-logico.dot) (Graphviz).</sub>
+
 **Notación:** `TABLA(<u>clave_primaria</u>, atributo, columna_fk (FK → tabla.columna))`. Las PK subrayadas que son más de una columna forman una **clave compuesta**. Debajo de cada relación se listan las restricciones `UNIQUE` y `CHECK`.
 
 ## Transformación conceptual → lógico

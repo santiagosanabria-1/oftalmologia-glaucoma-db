@@ -16,6 +16,7 @@ docs/
   05-der.md                  DER en Mermaid (GitHub lo dibuja)
   06-modelo-logico.md        Modelo lógico con PK/FK
   07-normalizacion.md        0FN → 1FN → 2FN → 3FN → BCNF → 4FN
+  img/                       Imágenes del modelo conceptual, lógico y DER (PNG + fuente .dot)
 sql/
   01_schema.sql              DDL: tablas, PK, FK, UNIQUE, CHECK, DEFAULT
   02_seed.sql                Datos de prueba

@@ -59,27 +59,11 @@ Notación de cardinalidad: `1:1`, `1:N`, `N:M`. La participación se indica como
 
 ## Diagrama conceptual
 
-```
-                    ESPECIALIDAD
-                         │ 1
-                         │ N
-PACIENTE ──1───1── HISTORIA CLÍNICA ──1───N── CONSULTA ──N───1── PROFESIONAL
- │  │  │                 │ 1                   │
- │  │  │                 │ N                   ├──N───M── DIAGNÓSTICO
- │  │  │          DOCUMENTO CLÍNICO            ├──1───N── EXAMEN OFTALMOLÓGICO (OD / OI)
- │  │  │                                       ├──1───N── PRESIÓN INTRAOCULAR
- │  │  ├──1───N── ANTECEDENTE PERSONAL         ├──1───N── PAQUIMETRÍA
- │  │  ├──1───N── ANTECEDENTE FAMILIAR         ├──1───N── GONIOSCOPÍA
- │  │  ├──N───M── ALÉRGENO                     ├──1───N── OCT
- │  │  └──1───N── ALERTA CLÍNICA               ├──1───N── CAMPO VISUAL
- │  │                                          ├──1───N── TRATAMIENTO ──N───1── MEDICAMENTO
- │  │                                          ├──1───N── PROCEDIMIENTO ──N───1── TIPO DE PROCEDIMIENTO
- │  │                                          │
- │  └──1──0..1── REGISTRO DE GLAUCOMA ──1───N── CONTROL DE GLAUCOMA ──0..1───1── CONSULTA
- │                      │ N
- │                      │ 1
- │               TIPO DE GLAUCOMA
-```
+Notación de Chen: entidades en rectángulos (color por dominio), relaciones en rombos y cardinalidad en cada extremo. Los rombos dorados son relaciones N:M, que en el modelo lógico se convierten en entidades asociativas.
+
+![Modelo conceptual](img/modelo-conceptual.png)
+
+<sub>Fuente editable del diagrama: [`img/modelo-conceptual.dot`](img/modelo-conceptual.dot) (Graphviz).</sub>
 
 ## Reglas de negocio del dominio
 
